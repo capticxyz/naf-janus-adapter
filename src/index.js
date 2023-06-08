@@ -639,6 +639,8 @@ class JanusAdapter {
       if (navigator.userAgent.indexOf("HeadlessChrome") !== -1) {
         // HeadlessChrome (e.g. puppeteer) doesn't support webrtc video streams, so we remove those lines from the SDP.
         jsep.sdp = jsep.sdp.replace(/m=video[^]*m=/, "m=");
+        jsep.sdp = jsep.sdp.replace(/a=mid:video\r\n/g, "a=" );
+        jsep.sdp = jsep.sdp.replace(/a=group:BUNDLE audio video data\r\n/g, "a=group:BUNDLE audio data\r\n")
       }
     }
 
