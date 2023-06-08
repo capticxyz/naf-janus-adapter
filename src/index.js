@@ -82,9 +82,36 @@ const OPUS_PARAMETERS = {
   "sprop-stereo": 0
 };
 
+
 const DEFAULT_PEER_CONNECTION_CONFIG = {
-  iceServers: [{ urls: "stun:stun1.l.google.com:19302" }, { urls: "stun:stun2.l.google.com:19302" }]
+  iceServers: [
+    {
+      urls: [
+        "stun:fr-turn1.xirsys.com",
+        "turn:fr-turn1.xirsys.com:80?transport=udp",
+        "turn:fr-turn1.xirsys.com:3478?transport=udp",
+        "turn:fr-turn1.xirsys.com:80?transport=tcp",
+        "turn:fr-turn1.xirsys.com:3478?transport=tcp",
+        "turns:fr-turn1.xirsys.com:443?transport=tcp",
+        "turns:fr-turn1.xirsys.com:5349?transport=tcp",
+      ], // A TURN server
+      username: "q3QHwyaXhd4LeEAT8i6Oo_XF-uprycxMtKOFf5EL5TGGfvQGHip31ujOubRRoi54AAAAAGILqYJhcnB1",
+      credential: "d5762d02-627a-11ec-bd22-0242ac130003",
+    },
+  ],
 };
+
+fetch("https://global.xirsys.net/_turn/vrland/", {
+  method: "PUT",
+  body: "",
+  headers: new Headers({
+    Authorization: "Basic " + btoa("arpu:d5762d02-627a-11ec-bd22-0242ac130003"),
+  }),
+})
+  .catch((err) => console.error("Error", err))
+  .then((res) => res.json())
+  .then((res) => {});
+
 
 const WS_NORMAL_CLOSURE = 1000;
 
@@ -974,6 +1001,10 @@ class JanusAdapter {
       this.pendingMediaRequests.get(clientId).audio.resolve(audioStream);
       this.pendingMediaRequests.get(clientId).video.resolve(videoStream);
     }
+  }
+
+  getLocalMediaStream() {
+    return this.localMediaStream;
   }
 
   async setLocalMediaStream(stream) {
