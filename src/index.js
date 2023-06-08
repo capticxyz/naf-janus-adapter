@@ -110,7 +110,16 @@ fetch("https://global.xirsys.net/_turn/vrland/", {
 })
   .catch((err) => console.error("Error", err))
   .then((res) => res.json())
-  .then((res) => {});
+  .then((res) => {
+    if (!res) {
+      console.error("No ICE server response");
+      return;
+    }
+    const iceServers = res.v.iceServers;
+    const username = iceServers[iceServers.length - 1].username;
+    const credential = iceServers[iceServers.length - 1].credential;
+    DEFAULT_PEER_CONNECTION_CONFIG.iceServers = [{ urls: iceServers.map(({ url }) => url), username, credential }];
+  });
 
 
 const WS_NORMAL_CLOSURE = 1000;
