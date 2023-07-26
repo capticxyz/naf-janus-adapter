@@ -1,0 +1,6 @@
+updates:
+  - package-ecosystem: "npm"
+    allow:
+      - dependency-name: "*"
+        dependency-type: "production"
+    
